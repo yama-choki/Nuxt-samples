@@ -30,18 +30,12 @@
       app
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn
+      <!-- <v-btn
         icon
         @click.stop="miniVariant = !miniVariant"
       >
         <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="clipped = !clipped"
-      >
-        <v-icon>mdi-application</v-icon>
-      </v-btn>
+      </v-btn> -->
       <v-btn
         icon
         @click.stop="fixed = !fixed"
@@ -109,8 +103,8 @@ export default {
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'calender_sample1',
-          to: '/calender_sample1'
+          title: 'calendar_sample1',
+          to: '/calendar_sample1'
         }
       ],
       miniVariant: false,

@@ -55,12 +55,20 @@
                             hint="10文字以内"
                             label="タイトル"
                         ></v-text-field>
-                        <v-btn text style="width:100%;">
-                            開始　<span>2022年10月10日</span><span>15:00</span>
-                        </v-btn>
-                        <v-btn text style="width:100%;">
-                            終了　<span>2022年10月10日</span><span>16:00</span>
-                        </v-btn>
+                        <div style="pointer-events: none;">
+                          <v-text-field
+                              v-model="min"
+                              label="開始"
+                          ></v-text-field>
+                        </div>
+                        <InputTime :title ='startDialogTitle'></InputTime>
+                        <div style="pointer-events: none;">
+                          <v-text-field
+                              v-model="max"
+                              label="終了"
+                          ></v-text-field>
+                        </div>
+                        <InputTime :title ='endDialogTitle'></InputTime>
                         <v-textarea
                             clearable
                             clear-icon="mdi-close-circle"
@@ -70,7 +78,7 @@
                             v-model="memo"
                         ></v-textarea>
                         <v-select
-                        :items="select"
+                        :items="color"
                         label="色"
                         item-value="text"
                         ></v-select>
@@ -78,99 +86,29 @@
                 </div>
             </v-card-text>
           <v-card-text>
-            <v-btn
-              color="primary"
-              dark
-              @click="dialog3 = !dialog3"
-            >
-              Open Dialog 3
-            </v-btn>
           </v-card-text>
         </v-card>
       </v-dialog>
 
       <!-- 3つ目のダイアログ　日時入力フォーム -->
-      <v-dialog
-        v-model="dialog3"
-        max-width="800px"
-      >
-        <v-card>
-            <v-toolbar
-                color="primary"
-                dark
-            >
-                <v-card-actions class="justify-start">
-                    <v-btn
-                        icon
-                        text
-                        @click="dialog3 = false"
-                    >
-                        <v-icon>mdi-trash-can-outline</v-icon>
-                    </v-btn>
-                </v-card-actions>
-                <v-spacer></v-spacer>
-                <v-card-title>
-                    予定の日時
-                </v-card-title>
-                <v-spacer></v-spacer>
-                <v-card-actions class="justify-end">
-                    <v-btn
-                        icon
-                        text
-                        @click="dialog3 = false"
-                    >
-                        <v-icon>mdi-check</v-icon>
-                    </v-btn>
-                </v-card-actions>
-            </v-toolbar>
-
-          <v-card-title>
-            <v-spacer></v-spacer>
-            <span>開始日時</span>
-            <v-spacer></v-spacer>
-          </v-card-title>
-          <v-row justify="center">
-            <v-spacer></v-spacer>
-            <v-date-picker v-model="minPicker"></v-date-picker>
-            <v-spacer></v-spacer>
-            <v-time-picker format="24hr" scrollable ></v-time-picker>
-            <v-spacer></v-spacer>
-          </v-row>
-
-          <v-card-title>
-            <v-spacer></v-spacer>
-            <span>終了日時</span>
-            <v-spacer></v-spacer>
-          </v-card-title>
-          <v-row justify="center">
-            <v-spacer></v-spacer>
-            <v-date-picker v-model="maxPicker"></v-date-picker>
-            <v-spacer></v-spacer>
-            <v-time-picker format="24hr" scrollable ></v-time-picker>
-            <v-spacer></v-spacer>
-          </v-row>
-
-        </v-card>
-      </v-dialog>
     </v-row>
   </div>
 </template>
 
 <script>
+import InputTime from './InputTime.vue'
  export default {
+  components: { InputTime },
     data () {
       return {
+        startDialogTitle:'開始日時',
+        endDialogTitle:'終了日時',
         title:'',
         memo:'',
-        dialog: false,
+        min:'',
+        max:'',
         dialog2: false,
-        dialog3: false,
-        notifications: false,
-        sound: true,
-        widgets: false,
-        minPicker: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-        picker: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-        select: [
+        color: [
           { text: 'State 1' },
           { text: 'State 2' },
           { text: 'State 3' },
