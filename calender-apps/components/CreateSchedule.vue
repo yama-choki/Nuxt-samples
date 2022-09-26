@@ -39,7 +39,7 @@
                     <v-btn
                         icon
                         text
-                        @click="dialog = false"
+                        @click="dialog = false,addEvent()"
                     >
                         <v-icon>mdi-calendar-edit-outline</v-icon>
                     </v-btn>
@@ -47,7 +47,7 @@
             </v-toolbar>
 
             <v-card-text>
-                <div class="text-h2 pa-12">
+                <div class="text-h2 pa-4">
                     <v-container fluid>
                         <v-text-field
                             v-model="name"
@@ -55,28 +55,122 @@
                             hint="10文字以内"
                             label="タイトル"
                         ></v-text-field>
-                        <div style="pointer-events: none;">
-                          <v-text-field
-                              v-model="start"
-                              label="開始"
-                          ></v-text-field>
-                        </div>
-                        <InputTime
-                          :title ='startDialogTitle'
-                          @inputStart="inputStart"
-                        >
-                        </InputTime>
-                        <div style="pointer-events: none;">
-                          <v-text-field
-                              v-model="end"
-                              label="終了"
-                          ></v-text-field>
-                        </div>
-                        <InputTime
-                          :title ='endDialogTitle'
-                          @inputEnd="inputEnd"
-                        >
-                        </InputTime>
+                        <v-row>
+                          <v-col
+                           cols="11"
+                          >
+                            <div style="pointer-events: none;">
+                              <v-text-field
+                                  v-model="start"
+                                  label="開始"
+                              ></v-text-field>
+                            </div>
+                          </v-col>
+                          <v-col
+                            cols="1"
+                            class="pt-10"
+                          >
+                            <InputTime
+                              :title ='startDialogTitle'
+                              @inputStart="inputStart"
+                            >
+                            </InputTime>
+                          </v-col>
+                        </v-row>
+                        <v-row>
+                          <v-col
+                           cols="11"
+                          >
+                            <div style="pointer-events: none;">
+                              <v-text-field
+                                  v-model="end"
+                                  label="終了"
+                              ></v-text-field>
+                            </div>
+                          </v-col>
+                          <v-col
+                            cols="1"
+                            class="pt-10"
+                          >
+                            <InputTime
+                              :title ='endDialogTitle'
+                              @inputEnd="inputEnd"
+                            >
+                            </InputTime>
+                          </v-col>
+                        </v-row>
+                        <button style="width: 100%;" @click="colorPick = !colorPick">
+                          <div style="pointer-events: none;">
+                            <v-text-field
+                                v-model="color"
+                                label="色"
+                            ></v-text-field>
+                          </div>
+                        </button>
+                        <v-fab-transition>
+                          <v-row v-show="colorPick">
+                            <v-card class="px-8">
+                              <v-radio-group
+                                v-model="color"
+                                column
+                              >
+                              <v-row>
+
+                                <v-radio
+                                  label="red"
+                                  color="red"
+                                  value="red"
+                                ></v-radio>
+                                <v-radio
+                                  label="pink"
+                                  color="pink"
+                                  value="pink"
+                                ></v-radio>
+                                <v-radio
+                                  label="purple"
+                                  color="purple"
+                                  value="purple"
+                                ></v-radio>
+                                <v-radio
+                                  label="indigo"
+                                  color="indigo"
+                                  value="indigo"
+                                ></v-radio>
+                                <v-radio
+                                  label="cyan"
+                                  color="cyan"
+                                  value="cyan"
+                                ></v-radio>
+                                <v-radio
+                                  label="teal"
+                                  color="teal"
+                                  value="teal"
+                                ></v-radio>
+                                <v-radio
+                                  label="green"
+                                  color="green"
+                                  value="green"
+                                ></v-radio>
+                                <v-radio
+                                  label="lime"
+                                  color="lime"
+                                  value="lime"
+                                ></v-radio>
+                                <v-radio
+                                  label="yellow"
+                                  color="yellow"
+                                  value="yellow"
+                                ></v-radio>
+                                <v-radio
+                                  label="orange"
+                                  color="orange"
+                                  value="orange"
+                                ></v-radio>
+                              </v-row>
+                              </v-radio-group>
+                            </v-card>
+                          </v-row>
+                        </v-fab-transition>
                         <v-textarea
                             clearable
                             clear-icon="mdi-close-circle"
@@ -85,11 +179,6 @@
                             hint="200文字以内"
                             v-model="memo"
                         ></v-textarea>
-                        <v-select
-                        :items="color"
-                        label="色"
-                        item-value="text"
-                        ></v-select>
                     </v-container>
                 </div>
             </v-card-text>
@@ -112,19 +201,14 @@ import InputTime from './InputTime.vue'
         dialog: false,
         startDialogTitle:'開始日時',
         endDialogTitle:'終了日時',
+        colorPick: false,
+
         name:'',
         start:'',
         end:'',
+        color:'',
         memo:'',
-        color: [
-          { text: 'State 1' },
-          { text: 'State 2' },
-          { text: 'State 3' },
-          { text: 'State 4' },
-          { text: 'State 5' },
-          { text: 'State 6' },
-          { text: 'State 7' },
-        ],
+        allDay: true,
       }
     },
     methods:{
@@ -134,10 +218,34 @@ import InputTime from './InputTime.vue'
       inputEnd(endDateTime){
         this.end = endDateTime
       },
+      addEvent(){
+        const schedule = [this.name, this.start, this.end, this.color, this.memo]
+        console.log(schedule)
+        // this.$emit('addEvent', schedule)
+        this.name = ''
+        this.start = ''
+        this.end = ''
+        this.color = ''
+        this.memo = ''
+      }
     }
   }
 </script>
 
 <style>
+.v-enter-active, .v-leave-active {
+  transition: all 500ms;
+}
+
+/* 表示アニメーション開始時 ・ 非表示アニメーション後 */
+.v-enter, .v-leave-to {
+  opacity: 0;
+  transform: translateY(200px);
+}
+.v-leave-to {
+  opacity: 0;
+  transform: translateY(-200px);
+}
+
 
 </style>

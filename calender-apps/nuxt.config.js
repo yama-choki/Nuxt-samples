@@ -4,7 +4,7 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: '%s - calender-apps',
-    title: 'calender-apps',
+    title: 'calendar-apps',
     htmlAttrs: {
       lang: 'en'
     },

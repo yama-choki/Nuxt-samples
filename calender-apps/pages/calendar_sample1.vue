@@ -119,6 +119,7 @@
             <v-card-text>
               <span v-html="selectedEvent.details"></span>
               <p>{{selectedEvent.memo}}</p>
+              <p>{{selectedEvent}}</p>
             </v-card-text>
             <v-card-actions>
               <v-btn
