@@ -153,10 +153,11 @@ export default {
       events: [
         // こんな感じでデータが受け渡されている
         // {
-        // color:"green",
-        // end:Sat Sep 17 2022 21:15:00 GMT+0900 (日本標準時),name:"Holiday",
-        // start:Sat Sep 17 2022 19:15:00 GMT+0900 (日本標準時),
-        // timed:true
+          // name:"Holiday",
+          // start:Sat Sep 17 2022 19:15:00 GMT+0900 (日本標準時),
+          // end:Sat Sep 17 2022 21:15:00 GMT+0900 (日本標準時),
+          // color:"green",
+          // timed:true
         // }
         ],
       colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],

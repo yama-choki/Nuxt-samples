@@ -38,7 +38,7 @@
                     <v-btn
                         icon
                         text
-                        @click="dialog = false"
+                        @click="dialog = false, emitDateTime()"
                     >
                         <v-icon>mdi-check</v-icon>
                     </v-btn>
@@ -74,14 +74,15 @@ export default {
       }
     },
     computed :{
-        dateTimeFormat(){
-            const formatTime = this.timePicker + ':00'
-            const dateTime = `${this.picker} ${formatTime}`
+        formatDateTime(){
+            const dateTime = `${this.picker} ${this.timePicker}`
             return new Date(dateTime)
         }
     },
     methods:{
-
+        emitDateTime(){
+          this.title === '開始日時' ? this.$emit('inputStart', this.formatDateTime) :this.$emit('inputEnd', this.formatDateTime)
+        }
     }
   }
 </script>

@@ -7,13 +7,13 @@
         color="primary"
         class="ma-2"
         icon
-        @click="dialog2 = true"
+        @click="dialog = true"
       >
         <v-icon>mdi-pencil-plus</v-icon>
       </v-btn>
 
       <v-dialog
-        v-model="dialog2"
+        v-model="dialog"
         max-width="500px"
       >
         <v-card>
@@ -25,7 +25,7 @@
                     <v-btn
                         icon
                         text
-                        @click="dialog2 = false"
+                        @click="dialog = false"
                     >
                         <v-icon>mdi-trash-can-outline</v-icon>
                     </v-btn>
@@ -39,7 +39,7 @@
                     <v-btn
                         icon
                         text
-                        @click="dialog2 = false"
+                        @click="dialog = false"
                     >
                         <v-icon>mdi-calendar-edit-outline</v-icon>
                     </v-btn>
@@ -50,25 +50,33 @@
                 <div class="text-h2 pa-12">
                     <v-container fluid>
                         <v-text-field
-                            v-model="title"
+                            v-model="name"
                             counter="10"
                             hint="10文字以内"
                             label="タイトル"
                         ></v-text-field>
                         <div style="pointer-events: none;">
                           <v-text-field
-                              v-model="min"
+                              v-model="start"
                               label="開始"
                           ></v-text-field>
                         </div>
-                        <InputTime :title ='startDialogTitle'></InputTime>
+                        <InputTime
+                          :title ='startDialogTitle'
+                          @inputStart="inputStart"
+                        >
+                        </InputTime>
                         <div style="pointer-events: none;">
                           <v-text-field
-                              v-model="max"
+                              v-model="end"
                               label="終了"
                           ></v-text-field>
                         </div>
-                        <InputTime :title ='endDialogTitle'></InputTime>
+                        <InputTime
+                          :title ='endDialogTitle'
+                          @inputEnd="inputEnd"
+                        >
+                        </InputTime>
                         <v-textarea
                             clearable
                             clear-icon="mdi-close-circle"
@@ -101,13 +109,13 @@ import InputTime from './InputTime.vue'
   components: { InputTime },
     data () {
       return {
+        dialog: false,
         startDialogTitle:'開始日時',
         endDialogTitle:'終了日時',
-        title:'',
+        name:'',
+        start:'',
+        end:'',
         memo:'',
-        min:'',
-        max:'',
-        dialog2: false,
         color: [
           { text: 'State 1' },
           { text: 'State 2' },
@@ -119,6 +127,14 @@ import InputTime from './InputTime.vue'
         ],
       }
     },
+    methods:{
+      inputStart(startDateTime){
+        this.start = startDateTime
+      },
+      inputEnd(endDateTime){
+        this.end = endDateTime
+      },
+    }
   }
 </script>
 
