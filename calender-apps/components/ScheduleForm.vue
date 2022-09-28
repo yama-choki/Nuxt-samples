@@ -202,6 +202,7 @@
 import InputDateTime from './InputDateTime.vue'
  export default {
   components: { InputDateTime },
+    props:['formKind'],
     data () {
       return {
         dialog: false,
