@@ -39,7 +39,7 @@
                     <v-btn
                         icon
                         text
-                        @click="dialog = false,addEvent()"
+                        @click="dialog = false, addEvent()"
                     >
                         <v-icon>mdi-calendar-edit-outline</v-icon>
                     </v-btn>
@@ -49,6 +49,11 @@
             <v-card-text>
                 <div class="text-h2 pa-4">
                     <v-container fluid>
+                        <v-checkbox
+                          v-model="allDay"
+                          label="終日の予定"
+                          class="mx-auto"
+                        ></v-checkbox>
                         <v-text-field
                             v-model="name"
                             counter="10"
@@ -70,11 +75,12 @@
                             cols="1"
                             class="pt-10"
                           >
-                            <InputTime
+                            <InputDateTime
                               :title ='startDialogTitle'
+                              :allDay ='allDay'
                               @inputStart="inputStart"
                             >
-                            </InputTime>
+                            </InputDateTime>
                           </v-col>
                         </v-row>
                         <v-row>
@@ -92,11 +98,12 @@
                             cols="1"
                             class="pt-10"
                           >
-                            <InputTime
+                            <InputDateTime
                               :title ='endDialogTitle'
+                              :allDay ='allDay'
                               @inputEnd="inputEnd"
                             >
-                            </InputTime>
+                            </InputDateTime>
                           </v-col>
                         </v-row>
                         <button style="width: 100%;" @click="colorPick = !colorPick">
@@ -187,20 +194,19 @@
         </v-card>
       </v-dialog>
 
-      <!-- 3つ目のダイアログ　日時入力フォーム -->
     </v-row>
   </div>
 </template>
 
 <script>
-import InputTime from './InputTime.vue'
+import InputDateTime from './InputDateTime.vue'
  export default {
-  components: { InputTime },
+  components: { InputDateTime },
     data () {
       return {
         dialog: false,
-        startDialogTitle:'開始日時',
-        endDialogTitle:'終了日時',
+        startDialogTitle:'開始',
+        endDialogTitle:'終了',
         colorPick: false,
 
         name:'',
@@ -208,7 +214,7 @@ import InputTime from './InputTime.vue'
         end:'',
         color:'',
         memo:'',
-        allDay: true,
+        allDay: false,
       }
     },
     methods:{
@@ -219,33 +225,29 @@ import InputTime from './InputTime.vue'
         this.end = endDateTime
       },
       addEvent(){
-        const schedule = [this.name, this.start, this.end, this.color, this.memo]
-        console.log(schedule)
-        // this.$emit('addEvent', schedule)
+        const newEvent = {
+          name: this.name,
+          start: this.start,
+          end: this.end,
+          color: this.color,
+          memo: this.memo,
+          timed: !this.allDay,
+          created: new Date()
+        }
+        this.$emit('addEvent', newEvent)
+        this.initform()
+      },
+      initform(){
         this.name = ''
         this.start = ''
         this.end = ''
         this.color = ''
         this.memo = ''
+        this.allDay = false
       }
     }
   }
 </script>
 
 <style>
-.v-enter-active, .v-leave-active {
-  transition: all 500ms;
-}
-
-/* 表示アニメーション開始時 ・ 非表示アニメーション後 */
-.v-enter, .v-leave-to {
-  opacity: 0;
-  transform: translateY(200px);
-}
-.v-leave-to {
-  opacity: 0;
-  transform: translateY(-200px);
-}
-
-
 </style>

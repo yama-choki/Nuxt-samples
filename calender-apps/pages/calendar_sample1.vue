@@ -76,7 +76,7 @@
           <v-spacer></v-spacer>
 
           <!-- <CreateCalender /> -->
-          <CreateSchedule />
+          <ScheduleForm @addEvent="addEvent" />
         </v-toolbar>
       </v-sheet>
       <v-sheet height="600">
@@ -90,8 +90,8 @@
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
-          @change="updateRange"
         ></v-calendar>
+          <!-- 👆に👉@change="updateRange"を入れることで、見た目が変わった際に発火 -->
         <v-menu
           v-model="selectedOpen"
           :close-on-content-click="false"
@@ -118,18 +118,10 @@
             </v-toolbar>
             <v-card-text>
               <span v-html="selectedEvent.details"></span>
-              <p>{{selectedEvent.memo}}</p>
-              <p>{{selectedEvent}}</p>
+              <p>メモ：{{selectedEvent.name}}</p>
+              <p>開始日時：{{selectedEvent.start}}</p>
+              <p>終了日時：{{selectedEvent.end}}</p>
             </v-card-text>
-            <v-card-actions>
-              <v-btn
-                text
-                color="secondary"
-                @click="selectedOpen = false"
-              >
-                Cancel
-              </v-btn>
-            </v-card-actions>
           </v-card>
         </v-menu>
       </v-sheet>
@@ -200,37 +192,40 @@ export default {
 
         nativeEvent.stopPropagation()
       },
-      updateRange ({ start, end }) {
-        const events = []
-
-        const min = new Date(`${start.date}T00:00:00`)
-        const max = new Date(`${end.date}T23:59:59`)
-        const days = (max.getTime() - min.getTime()) / 86400000
-        const eventCount = this.rnd(days, days + 20)
-
-        for (let i = 0; i < eventCount; i++) {
-          const allDay = this.rnd(0, 3) === 0
-          const firstTimestamp = this.rnd(min.getTime(), max.getTime())
-          const first = new Date(firstTimestamp - (firstTimestamp % 900000))
-          const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
-          const second = new Date(first.getTime() + secondTimestamp)
-
-          events.push({
-            name: this.names[this.rnd(0, this.names.length - 1)],
-            start: first,
-            end: second,
-            color: this.colors[this.rnd(0, this.colors.length - 1)],
-            timed: !allDay,
-            memo: 'memomemomemo'
-          })
-        }
-
-        this.events = events
-        console.log(this.events[0])
+      addEvent(newEvent){
+        this.events.push(newEvent)
       },
-      rnd (a, b) {
-        return Math.floor((b - a + 1) * Math.random()) + a
-      },
+      // updateRange ({ start, end }) {
+      //   const events = []
+
+      //   const min = new Date(`${start.date}T00:00:00`)
+      //   const max = new Date(`${end.date}T23:59:59`)
+      //   const days = (max.getTime() - min.getTime()) / 86400000
+      //   const eventCount = this.rnd(days, days + 20)
+
+      //   for (let i = 0; i < eventCount; i++) {
+      //     const allDay = this.rnd(0, 3) === 0
+      //     const firstTimestamp = this.rnd(min.getTime(), max.getTime())
+      //     const first = new Date(firstTimestamp - (firstTimestamp % 900000))
+      //     const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
+      //     const second = new Date(first.getTime() + secondTimestamp)
+
+      //     events.push({
+      //       name: this.names[this.rnd(0, this.names.length - 1)],
+      //       start: first,
+      //       end: second,
+      //       color: this.colors[this.rnd(0, this.colors.length - 1)],
+      //       timed: !allDay,
+      //       memo: 'memomemomemo'
+      //     })
+      //   }
+
+      //   this.events = events
+      //   console.log(this.events[0])
+      // },
+      // rnd (a, b) {
+      //   return Math.floor((b - a + 1) * Math.random()) + a
+      // },
     },
   }
 </script>

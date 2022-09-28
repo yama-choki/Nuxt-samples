@@ -45,24 +45,18 @@
           </v-card-actions>
         </v-toolbar>
         <v-divider></v-divider>
-        <v-checkbox
-          v-model="allDay"
-          label="終日の予定"
-          class="mx-auto"
-        ></v-checkbox>
-        <v-card-text style="height: 600px;">
-            <v-row justify="center" class="mt-3">
+        <v-card-text style="height: 430px;">
+
+            <v-row justify="center" class="mt-5" >
                 <v-spacer></v-spacer>
-                <v-date-picker v-model="picker"></v-date-picker>
+                <v-date-picker elevation="15" v-model="picker" ></v-date-picker>
                 <v-spacer></v-spacer>
             </v-row>
-            <v-slide-y-transition>
-              <v-row justify="center" v-show="!allDay">
-                  <v-spacer></v-spacer>
-                  <v-time-picker format="24hr" scrollable v-model="timePicker"></v-time-picker>
-                  <v-spacer></v-spacer>
-              </v-row>
-            </v-slide-y-transition>
+            <v-row justify="center" v-show="!allDay">
+                <v-spacer></v-spacer>
+                <v-time-picker format="24hr" elevation="15" scrollable class="mt-3" v-model="timePicker" ></v-time-picker>
+                <v-spacer></v-spacer>
+            </v-row>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -71,13 +65,12 @@
 
 <script>
 export default {
-    props:['title'],
+    props:['title', 'allDay'],
     data () {
       return {
         dialog: false,
         picker:(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         timePicker:'00:00',
-        allDay: false
       }
     },
     computed :{
@@ -88,16 +81,12 @@ export default {
     },
     methods:{
         emitDateTime(){
-          this.title === '開始日時' ? this.$emit('inputStart', this.formatDateTime) :this.$emit('inputEnd', this.formatDateTime)
-          this.deleteDateTime()
+          this.title === '開始' ? this.$emit('inputStart', this.formatDateTime) :this.$emit('inputEnd', this.formatDateTime)
+          this.initDateTime()
         },
-        emitAllDay(){
-          allDay? this.$emit('emitAllDay'): this.allDay = false
-        },
-        deleteDateTime(){
+        initDateTime(){
           this.picker = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
           this.timePicker = '00:00'
-          this.allDay = false
         }
     }
   }
